@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CleanArchMvc.Domain.Entities
 {
-    public sealed class Category
+    public sealed class Category : Entity
     {
 
         public Category(string name)
@@ -13,19 +13,21 @@ namespace CleanArchMvc.Domain.Entities
 
         public Category(int id, string name)
         {
+            DomainExceptionValidation.When(id < 0, "Invalid id value");
             Id = id;
-            Name = name;
+            ValidateDomain(name);
         }
 
 
+        public void Update(string name)
+        {
+            ValidateDomain(name);
+        }
 
-        public int Id { get; private set; }
-
+        
         public string Name { get; private set; }
 
         public ICollection<Product> Products { get; set; }
-
-
 
         private void ValidateDomain(string name)
         {
